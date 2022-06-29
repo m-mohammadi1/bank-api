@@ -2,6 +2,8 @@
 
 namespace Features\Core\Http\V1\Controllers;
 
+use Features\Core\Http\V1\Requests\TransferMoneyRequest;
+use Features\Core\Http\V1\Resources\TransactionResource;
 use Features\Core\Models\Wage;
 use Features\Core\Rules\ValidCreditCart;
 use Features\Core\Services\TransferMoneyService;
@@ -13,19 +15,15 @@ use Mockery\Exception;
 class TransferMoneyController
 {
 
-    public function transafer(Request $request)
+    public function transafer(TransferMoneyRequest $request)
     {
-        $data = $request->validate([
-            'sender_cart_number' => ['required', 'min:16', 'max:16', 'exists:credit_carts,cart_number', new ValidCreditCart],
-            'recipient_cart_number' => ['required', 'min:16', 'max:16', 'exists:credit_carts,cart_number', new ValidCreditCart],
-            'amount' => ['required', 'numeric', 'min:500', 'max:50000000'],
-        ]);
+        $data = $request->validated();
 
-        $result = TransferMoneyService::run($data['sender_cart_number'], $data['recipient_cart_number'], $data['amount']);
-
+        $transaction = TransferMoneyService::run($data['sender_cart_number'], $data['recipient_cart_number'], $data['amount']);
 
         return response()->json([
-            'status' => 'ok'
+            'status' => 'ok',
+            'transaction' => TransactionResource::make($transaction)
         ]);
     }
 

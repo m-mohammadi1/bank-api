@@ -13,15 +13,15 @@ class TransferMoneyService
     public static function run($sender_cart_number, $recipient_cart_number, $amount)
     {
         $user = auth('sanctum')->user();
-        $creditCartAccount = Account::query()
+        $senderCreditCartAccount = Account::query()
             ->where('user_id', $user->id)
             ->whereHas('credit_carts', function ($q) use ($sender_cart_number) {
                 $q->where('cart_number', $sender_cart_number);
-            })->first();
-        $creditCart = $creditCartAccount->credit_carts()->where('cart_number', $sender_cart_number)->first();
+            })->firstOrFail();
+        $creditCart = $senderCreditCartAccount->credit_carts()->where('cart_number', $sender_cart_number)->firstOrFail();
 
 
-        if ($creditCartAccount->balance < $amount) {
+        if ($senderCreditCartAccount->balance < $amount) {
             abort(422, __('Account Balance Is Not Enough'));
         }
 
@@ -31,24 +31,23 @@ class TransferMoneyService
 
         try {
             DB::beginTransaction();
-            // 500 wage per transaction
-            // cart number could be en, fa, ar
-
             $transaction = $creditCart->transactions()->create([
                 'amount' => $amount,
                 'status' => true,
             ]);
 
             $transaction->wage()->create([
-                'amount' => 500
+                'amount' => config('core.transaction_wage')
             ]);
 
             // sender account balance
-            $creditCartAccount->balance -= $amount;
-            $creditCartAccount->save();
+            $senderCreditCartAccount->balance -= $amount;
+            $senderCreditCartAccount->save();
             // recipient account balance
             $recipientAccount = $recipientCreditCart->account;
+
             abort_if(!$recipientAccount, Response::HTTP_BAD_REQUEST, __('Reception Account Not Found'));
+
             $recipientAccount->balance += $amount;
             $recipientAccount->save();
 
@@ -60,9 +59,15 @@ class TransferMoneyService
                 'amount' => $amount,
                 'status' => false,
             ]);
-        }
-//        dd($recipientAccount->balance, $creditCartAccount->balance);
 
-        return true;
+            throw new \HttpResponseException(__('Transaction Failed.', 400));
+        }
+
+        return $transaction;
+    }
+
+    public static function validateSituations()
+    {
+
     }
 }
