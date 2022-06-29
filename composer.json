@@ -15,7 +15,8 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/tinker": "^2.7",
-        "features/user": "dev-main"
+        "features/user": "dev-develop",
+        "features/notification": "dev-develop"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

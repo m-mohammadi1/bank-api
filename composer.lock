@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c2bea3da30487da1455d36cb36df0ff",
+    "content-hash": "66c2cf6d128b3f72b8218d493b4ff79c",
     "packages": [
         {
             "name": "brick/math",
@@ -438,8 +438,46 @@
             "time": "2022-06-18T20:57:19+00:00"
         },
         {
+            "name": "features/notification",
+            "version": "dev-develop",
+            "dist": {
+                "type": "path",
+                "url": "./Features/Notification",
+                "reference": "4e2b1d596977a93dd25d3544f44b014444a63ffd"
+            },
+            "require": {
+                "laravel/sanctum": "^2.14.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Features\\Notification\\NotificationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Features\\Notification\\": "./"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "mohammad",
+                    "email": "m.mohammadi.developer@gmail.com"
+                }
+            ],
+            "description": "auth section",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "features/user",
-            "version": "dev-main",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./Features/User",
@@ -7799,7 +7837,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "features/user": 20
+        "features/user": 20,
+        "features/notification": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
