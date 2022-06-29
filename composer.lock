@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66c2cf6d128b3f72b8218d493b4ff79c",
+    "content-hash": "b5c6249579876d082a06696182aff030",
     "packages": [
         {
             "name": "brick/math",
@@ -438,12 +438,47 @@
             "time": "2022-06-18T20:57:19+00:00"
         },
         {
+            "name": "features/core",
+            "version": "dev-develop",
+            "dist": {
+                "type": "path",
+                "url": "./Features/Core",
+                "reference": "5a8490373af410d689949a96f00288667f75c23e"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Features\\Core\\CoreServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Features\\Core\\": "./"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "mohammad",
+                    "email": "m.mohammadi.developer@gmail.com"
+                }
+            ],
+            "description": "core section",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "features/notification",
             "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./Features/Notification",
-                "reference": "4e2b1d596977a93dd25d3544f44b014444a63ffd"
+                "reference": "b800dd779e92770f685d0cd2da34d520c6d7601b"
             },
             "require": {
                 "laravel/sanctum": "^2.14.1"
@@ -470,7 +505,7 @@
                     "email": "m.mohammadi.developer@gmail.com"
                 }
             ],
-            "description": "auth section",
+            "description": "notification section",
             "transport-options": {
                 "relative": true
             }
@@ -7837,6 +7872,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "features/core": 20,
         "features/user": 20,
         "features/notification": 20
     },
