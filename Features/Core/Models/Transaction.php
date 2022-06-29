@@ -38,6 +38,6 @@ class Transaction extends Model
 
     public static function newFactory()
     {
-        return TransactionFactory::class;
+        return TransactionFactory::new();
     }
 }

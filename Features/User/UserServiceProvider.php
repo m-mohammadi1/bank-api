@@ -18,8 +18,8 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
 
-        Route::prefix('api/v1/')
+        Route::prefix('api/')
             ->middleware('api')
-            ->group(__DIR__ . '/Routes/Api/api.v1.php');
+            ->group(__DIR__ . '/Routes/Api/api.php');
     }
 }

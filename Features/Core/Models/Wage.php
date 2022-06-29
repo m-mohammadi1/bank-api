@@ -29,6 +29,6 @@ class Wage extends Model
 
     public static function newFactory()
     {
-        return WageFactory::class;
+        return WageFactory::new();
     }
 }
