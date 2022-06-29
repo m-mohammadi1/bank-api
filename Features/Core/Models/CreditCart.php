@@ -39,6 +39,6 @@ class CreditCart extends Model
 
     public static function newFactory()
     {
-        return CreditCartFactory::class;
+        return CreditCartFactory::new();
     }
 }

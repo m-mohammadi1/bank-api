@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Features\Core\Models\Account;
+use Features\User\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,11 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+         User::factory()
+             ->has(Account::factory()->count(2))
+             ->create();
     }
 }
