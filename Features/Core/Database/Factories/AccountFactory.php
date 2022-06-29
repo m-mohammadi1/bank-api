@@ -14,7 +14,8 @@ class AccountFactory extends Factory
     {
         return [
             'account_number' => fake()->numerify("###########################"),
-            'user_id' => 1,
+            'user_id' => User::factory(),
+            'balance' => fake()->numberBetween(100000, 100000000000),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Features\Core\Models\Account;
+use Features\Core\Models\CreditCart;
 use Features\User\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,7 +18,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
          User::factory()
-             ->has(Account::factory()->count(2))
+             ->has(
+                 Account::factory()
+                     ->has(CreditCart::factory()->count(2), 'credit_carts')
+                     ->count(10)
+             )
+             ->count(10)
              ->create();
     }
 }
