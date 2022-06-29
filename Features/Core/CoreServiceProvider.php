@@ -1,16 +1,16 @@
 <?php
 
-namespace Features\Notification;
+namespace Features\Core;
 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class NotificationServiceProvider extends ServiceProvider
+class CoreServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config.php', 'notification');
+        $this->mergeConfigFrom(__DIR__ . '/config.php', 'core');
     }
 
 

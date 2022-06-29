@@ -1,6 +1,6 @@
 {
-    "name": "features/notification",
-    "description": "notification section",
+    "name": "features/core",
+    "description": "auth section",
     "minimum-stability": "stable",
     "license": "proprietary",
     "authors": [
@@ -9,18 +9,16 @@
             "email": "m.mohammadi.developer@gmail.com"
         }
     ],
-    "require": {
-        "laravel/sanctum": "^2.14.1"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
-            "Features\\Notification\\": "./"
+            "Features\\Core\\": "./"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Features\\Notification\\NotificationServiceProvider"
+                "Features\\Core\\CoreServiceProvider"
             ]
         }
     }
