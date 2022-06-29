@@ -1,6 +1,6 @@
 {
     "name": "features/core",
-    "description": "auth section",
+    "description": "core section",
     "minimum-stability": "stable",
     "license": "proprietary",
     "authors": [

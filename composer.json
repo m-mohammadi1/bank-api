@@ -15,6 +15,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/tinker": "^2.7",
+        "features/core": "dev-develop",
         "features/user": "dev-develop",
         "features/notification": "dev-develop"
     },
