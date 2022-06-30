@@ -2,76 +2,46 @@
 
 namespace Features\Core\Services;
 
-use Features\Core\Events\TransactionCompletedEvent;
-use Features\Core\Models\Account;
-use Features\Core\Models\CreditCart;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
-
-class TransferMoneyService
+class FormatNumberService
 {
-    public static function run($sender_cart_number, $recipient_cart_number, $amount)
+    public static function run(string $number, string $from = 'fa', string $to = 'en')
     {
-        $user = auth('sanctum')->user();
-        $senderCreditCartAccount = Account::query()
-            ->where('user_id', $user->id)
-            ->whereHas('credit_carts', function ($q) use ($sender_cart_number) {
-                $q->where('cart_number', $sender_cart_number);
-            })->firstOrFail();
-        $creditCart = $senderCreditCartAccount->credit_carts()->where('cart_number', $sender_cart_number)->firstOrFail();
-
-
-        if ($senderCreditCartAccount->balance < $amount) {
-            abort(422, __('Account Balance Is Not Enough'));
-        }
-
-        $recipientCreditCart = CreditCart::query()
-            ->where('cart_number', $recipient_cart_number)
-            ->firstOrFail();
-
         try {
-            DB::beginTransaction();
-            $transaction = $creditCart->transactions()->create([
-                'amount' => $amount,
-                'status' => true,
-            ]);
+            $result = match ($from . '-' . $to) {
+                'fa-en' => self::faToEn($number),
+                'en-fa' => self::enToFa($number),
 
-            $transaction->wage()->create([
-                'amount' => config('core.transaction_wage')
-            ]);
+                'ar-en' => self::arToEn($number),
+                'en-ar' => self::enToAr($number),
 
-            // sender account balance
-            $senderCreditCartAccount->balance -= $amount;
-            $senderCreditCartAccount->save();
-            // recipient account balance
-            $recipientAccount = $recipientCreditCart->account;
+                default => $number,
+            };
 
-            abort_if(!$recipientAccount, Response::HTTP_BAD_REQUEST, __('Reception Account Not Found'));
-
-            $recipientAccount->balance += $amount;
-            $recipientAccount->save();
-
-            // transaction completed event
-            TransactionCompletedEvent::dispatch($transaction, $user, $senderCreditCartAccount, $recipientAccount);
-
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            $transaction = $creditCart->transactions()->create([
-                'amount' => $amount,
-                'status' => false,
-            ]);
-
-            throw new \HttpResponseException(__('Transaction Failed.', 400));
+        } catch (\Exception $e) {
+            return $number;
         }
 
-        return $transaction;
+        return $result;
+
     }
 
-    public static function validateSituations()
+    private static function faToEn($string)
     {
+        return strtr($string, ['۰' => '0', '۱' => '1', '۲' => '2', '۳' => '3', '۴' => '4', '۵' => '5', '۶' => '6', '۷' => '7', '۸' => '8', '۹' => '9', '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9']);
+    }
 
+    private static function arToEn($string): string
+    {
+        return strtr($string, ['۰' => '0', '۱' => '1', '۲' => '2', '۳' => '3', '۴' => '4', '۵' => '5', '۶' => '6', '۷' => '7', '۸' => '8', '۹' => '9', '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9']);
+    }
+
+    private static function enToFa($string): string
+    {
+        return strtr($string, ['0' => '۰', '1' => '۱', '2' => '۲', '3' => '۳', '4' => '۴', '5' => '۵', '6' => '۶', '7' => '۷', '8' => '۸', '9' => '۹']);
+    }
+
+    private static function enToAr($string): string
+    {
+        return strtr($string, ['0' => '٠', '1' => '١', '2' => '٢', '3' => '٣', '4' => '٤', '5' => '٥', '6' => '٦', '7' => '٧', '8' => '٨', '9' => '٩']);
     }
 }
