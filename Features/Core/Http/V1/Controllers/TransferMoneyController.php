@@ -16,7 +16,7 @@ use Mockery\Exception;
 class TransferMoneyController extends Controller
 {
 
-    public function transafer(TransferMoneyRequest $request)
+    public function transfer(TransferMoneyRequest $request)
     {
         $data = $request->validated();
 
