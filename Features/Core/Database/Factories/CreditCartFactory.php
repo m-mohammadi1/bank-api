@@ -6,6 +6,7 @@ namespace Features\Core\Database\Factories;
 use Carbon\Carbon;
 use Features\Core\Models\Account;
 use Features\Core\Models\CreditCart;
+use Features\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CreditCartFactory extends Factory
@@ -19,6 +20,7 @@ class CreditCartFactory extends Factory
             'account_id'=> Account::factory(),
             'cvv2' => fake()->numerify("####"),
             'expired_at' => Carbon::now()->addYears(3),
+            'user_id' => User::factory(),
         ];
     }
 }
