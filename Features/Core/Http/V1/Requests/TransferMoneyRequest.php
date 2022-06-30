@@ -3,6 +3,7 @@
 namespace Features\Core\Http\V1\Requests;
 
 use Features\Core\Rules\ValidCreditCart;
+use Features\Core\Services\FormatNumberService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TransferMoneyRequest extends FormRequest
@@ -22,5 +23,15 @@ class TransferMoneyRequest extends FormRequest
             'amount' => ['required', 'numeric', 'min:' . $transactionMinAmount, 'max:' . $transactionMaxAmount],
         ];
     }
+
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'sender_cart_number' => FormatNumberService::run($this->input('sender_cart_number')),
+            'recipient_cart_number' => FormatNumberService::run($this->input('recipient_cart_number')),
+        ]);
+    }
+
 
 }

@@ -2,6 +2,7 @@
 
 namespace Features\Core\Services;
 
+use Features\Core\Events\TransactionCompletedEvent;
 use Features\Core\Models\Account;
 use Features\Core\Models\CreditCart;
 use Illuminate\Http\Response;
@@ -50,6 +51,9 @@ class TransferMoneyService
 
             $recipientAccount->balance += $amount;
             $recipientAccount->save();
+
+            // transaction completed event
+            TransactionCompletedEvent::dispatch($transaction, $user, $senderCreditCartAccount, $recipientAccount);
 
             DB::commit();
         } catch (Exception $e) {

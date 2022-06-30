@@ -3,6 +3,8 @@
 namespace Features\User\Models;
 
 use Features\Core\Models\Account;
+use Features\Core\Models\CreditCart;
+use Features\Core\Models\Transaction;
 use Features\User\Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,6 +33,20 @@ class User extends Authenticatable
     public function accounts()
     {
         return $this->hasMany(Account::class, 'user_id');
+    }
+
+    // pr many dep
+    // en
+    public function transactions()
+    {
+        return $this->hasManyThrough(
+            Transaction::class,
+            CreditCart::class,
+            'user_id',
+            'cart_id',
+            'id',
+            'id'
+        );
     }
 
     public static function newFactory()

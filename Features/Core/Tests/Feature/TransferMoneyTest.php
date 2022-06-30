@@ -16,6 +16,7 @@ class TransferMoneyTest extends TestCase
 
     public function test_user_can_transfer_money_with_correct_information()
     {
+        $this->withoutExceptionHandling();
         $amount = 500_000;
 
         $phone_number1 = '09145687353';
